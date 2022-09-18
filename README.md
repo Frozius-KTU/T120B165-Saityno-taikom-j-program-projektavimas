@@ -37,4 +37,4 @@ Bent 5 sąsajos (API) metodai. (Markės CRUD, Modelio CRUD, Detalės CRUD, User 
 
 Duomenų bazė – Microsoft sql server.
 
-xx![sss](https://user-images.githubusercontent.com/82966371/190926885-0cf0ed4c-236d-4f68-a7fd-4d0ba0231446.png)
+![sss](https://user-images.githubusercontent.com/82966371/190926885-0cf0ed4c-236d-4f68-a7fd-4d0ba0231446.png)
