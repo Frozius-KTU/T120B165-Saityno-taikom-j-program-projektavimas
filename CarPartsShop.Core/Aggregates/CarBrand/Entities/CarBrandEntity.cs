@@ -6,6 +6,7 @@ public class CarBrandEntity : BaseEntity, IAggregateRoot, IUserOwnedResource
 {
     public string Name { get; set; }
     public string UserId { get; set; }
+    public ShopRestUser User { get; set; }
     public void Update(CarBrandEntity request)
     {
         Name = request.Name ?? Name;

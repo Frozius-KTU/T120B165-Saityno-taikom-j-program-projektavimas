@@ -1,5 +1,4 @@
-﻿
-using CarPartsShop.Core.Aggregates.Auth;
+﻿using CarPartsShop.Core.Aggregates.Auth;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace CarPartsShop.Infrastructure.Data;

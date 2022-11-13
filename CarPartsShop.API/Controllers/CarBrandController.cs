@@ -1,12 +1,9 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using CarPartsShop.API.Models;
 using CarPartsShop.Core.Interfaces;
-using System.Collections.Generic;
 using System.Security.Claims;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.AspNetCore.Authorization;
-using System.Data;
 using CarPartsShop.Core.Aggregates.Auth;
 
 namespace CarPartsShop.API.Controllers;
@@ -15,14 +12,16 @@ namespace CarPartsShop.API.Controllers;
 [Route("api/carBrand")]
 public class CarBrandController : BaseController
 {
-    private readonly IAuthorizationService _authorizationService;
-    public CarBrandController(ICarBrandService carBrandService, ICarModelService carModelService, ICarPartService carPartService)
+    public CarBrandController(ICarBrandService carBrandService, ICarModelService carModelService, ICarPartService carPartService, IAuthorizationService authorizationService)
     {
         CarBrandService = carBrandService ?? throw new ArgumentNullException(nameof(carBrandService));
         CarModelService = carModelService ?? throw new ArgumentNullException(nameof(carModelService));
         CarPartService = carPartService ?? throw new ArgumentNullException(nameof(carPartService));
+        _authorizationService = authorizationService;
+
     }
 
+    private readonly IAuthorizationService _authorizationService;
     private ICarBrandService CarBrandService { get; }
     public ICarModelService CarModelService { get; }
     public ICarPartService CarPartService { get; }
@@ -37,7 +36,7 @@ public class CarBrandController : BaseController
             //return Ok(Mapper.Map<ICollection<CarBrandModel>>(list));
             return Mapper.Map<ICollection<CarBrandModel>>(list);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             return (ICollection<CarBrandModel>)StatusCode(StatusCodes.Status500InternalServerError, ex);
         }
@@ -58,7 +57,7 @@ public class CarBrandController : BaseController
             return Ok(result);
             //return Mapper.Map<CarBrandModel>(result);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             return StatusCode(StatusCodes.Status500InternalServerError, ex);
         }
@@ -129,7 +128,7 @@ public class CarBrandController : BaseController
             var carBrandEntity = carBrandModel.ToEntity();
             carBrandEntity.UserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
             var createdCarBrand = await CarBrandService.CreateCarBrand(carBrandEntity, cancellationToken);
-            
+
             return Created(nameof(CarBrandModel), Mapper.Map<CarBrandModel>(carBrandModel));
             //return Ok(Mapper.Map<CarBrandModel>(carBrandModel));
         }
@@ -167,24 +166,23 @@ public class CarBrandController : BaseController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<CarBrandModel>> UpdateCarBrand(Guid carBrandId, CarBrandModel carBrand, CancellationToken cancellationToken = default)
     {
-        try
-        {
-            var brand = CarBrandService.GetCarBrandById(carBrandId, cancellationToken);
-            if (carBrandId != carBrand.Id) return BadRequest("Nesutampa ID");
-            if (carBrandId == Guid.Empty) return NotFound();
-            var authorizationResult = await _authorizationService.AuthorizeAsync(User, brand, PolicyNames.ResourceOwner);
-            if (!authorizationResult.Succeeded)
-            {
-                // 404
-                return Forbid();
-            }
-            await CarBrandService.UpdateCarBrand(carBrandId, carBrand.ToEntity(), cancellationToken);
-            return NoContent();
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, ex);
-        }
-    }
+        var brand = CarBrandService.GetCarBrandById(carBrandId, cancellationToken);
 
+        if (brand == null) 
+            return NotFound();
+
+        var authorizationResult = await _authorizationService.AuthorizeAsync(User, brand.Result, PolicyNames.ResourceOwner);
+
+        if (!authorizationResult.Succeeded)
+        {
+            // 404
+            string ex = brand.Result.UserId + " == ";
+            return StatusCode(StatusCodes.Status500InternalServerError, ex);
+            //return Forbid();
+        }
+        await CarBrandService.UpdateCarBrand(carBrandId, carBrand.ToEntity(), cancellationToken);
+        return NoContent();
+    }
 }
+
+
