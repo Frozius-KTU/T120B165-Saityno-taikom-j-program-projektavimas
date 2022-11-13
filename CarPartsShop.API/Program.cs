@@ -7,8 +7,16 @@ using Microsoft.OpenApi.Models;
 using CarPartsShop.Infrastructure.Data;
 using CarPartsShop.Shared.Models;
 using CarPartsShop.API;
+using Microsoft.AspNetCore.Identity;
+using CarPartsShop.Core.Aggregates.Auth;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System.IdentityModel.Tokens.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
+
+JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
 builder.Logging.ClearProviders();
 
@@ -17,17 +25,39 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
 // Add services to the container.
 string connectionString = builder.Configuration.GetConnectionString("CarPartsShopDatabase");
+
+builder.Services.AddIdentity<ShopRestUser, IdentityRole>()
+    .AddEntityFrameworkStores<DatabaseContext>()
+    .AddDefaultTokenProviders();
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters.ValidAudience = builder.Configuration["JWT:ValidAudience"];
+        options.TokenValidationParameters.ValidIssuer = builder.Configuration["JWT:ValidIssuer"];
+        options.TokenValidationParameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]));
+    });
+
 builder.Services.AddAppDbContext(connectionString);
 
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 
 builder.Services.AddScopedQuartz();
 
+builder.Services.AddScoped<AuthDbSeeder>();
+
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
 builder.Services.AddHttpClient();
 
 builder.Services.AddCors();
+
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -43,6 +73,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
     containerBuilder.RegisterModule(new CoreDIModule());
     containerBuilder.RegisterModule(new InfrastructureDIModule());
 });
+
 
 var app = builder.Build();
 
@@ -66,6 +97,12 @@ app.UseRouting();
 app.MapControllers();
 
 MigrateDb(app);
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+var dbSeeder = app.Services.CreateScope().ServiceProvider.GetRequiredService<AuthDbSeeder>();
+await dbSeeder.SeedAsync();
 
 app.Run();
 

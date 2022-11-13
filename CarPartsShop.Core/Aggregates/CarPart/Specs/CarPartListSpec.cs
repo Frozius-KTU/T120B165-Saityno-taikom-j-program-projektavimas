@@ -1,7 +1,7 @@
 ﻿using Ardalis.Specification;
 
 namespace CarPartsShop.Core.Aggregates.CarPart.Specs;
-internal class CarPartListSpec : Specification<CarPartEntity>
+internal class CarPartListSpec : Specification<CarPartEntity> 
 {
     public CarPartListSpec()
     {

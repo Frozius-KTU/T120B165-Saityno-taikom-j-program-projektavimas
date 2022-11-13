@@ -27,6 +27,16 @@ internal class CarPartService : ICarPartService
         var spec = new CarPartByIdSpec(carPartId);
         return await CarPartRepo.GetBySpecAsync(spec, cancellationToken);
     }
+    public async Task<ICollection<CarPartEntity>> GetCarPartByBrandList([FromRoute] Guid carBrandId, [FromRoute] Guid carModelId, CancellationToken cancellationToken = default)
+    {
+        var spec = new CarPartByBrandIdSpec(carBrandId, carModelId);
+        return await CarPartRepo.ListAsync(spec, cancellationToken);
+    }
+    public async Task<ICollection<CarPartEntity>> GetCarPartsByBrandList([FromRoute] Guid carBrandId, CancellationToken cancellationToken = default)
+    {
+        var spec = new CarPartsByBrandIdSpec(carBrandId);
+        return await CarPartRepo.ListAsync(spec, cancellationToken);
+    }
     public async Task<ActionResult<CarPartEntity>> CreateCarPart(CarPartEntity carPartEntity, CancellationToken cancellationToken)
     {
         return await CarPartRepo.AddAsync(carPartEntity, cancellationToken);

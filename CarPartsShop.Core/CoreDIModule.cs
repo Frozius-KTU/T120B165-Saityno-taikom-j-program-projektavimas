@@ -17,5 +17,8 @@ public class CoreDIModule : Module
         builder.RegisterType<CarPartService>()
                .As<ICarPartService>()
                .InstancePerLifetimeScope();
+        builder.RegisterType<JwtTokenService>()
+               .As<IJwtTokenService>()
+               .InstancePerLifetimeScope();
     }
 }

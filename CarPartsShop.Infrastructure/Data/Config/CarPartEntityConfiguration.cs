@@ -2,7 +2,7 @@
 
 namespace CarPartsShop.Infrastructure.Data.Config;
 
-public abstract class CarPartEntityConfiguration : BaseEntityConfiguration<CarPartEntity>
+public class CarPartEntityConfiguration : BaseEntityConfiguration<CarPartEntity>
 {
     protected override void ConfigureEntity(EntityTypeBuilder<CarPartEntity> builder)
     {

@@ -3,7 +3,7 @@ using CarPartsShop.Core.Aggregates.CarModel;
 
 namespace CarPartsShop.Infrastructure.Data.Config;
 
-public abstract class CarModelEntityConfiguration : BaseEntityConfiguration<CarModelEntity>
+public class CarModelEntityConfiguration : BaseEntityConfiguration<CarModelEntity>
 {
     protected override void ConfigureEntity(EntityTypeBuilder<CarModelEntity> builder)
     {
