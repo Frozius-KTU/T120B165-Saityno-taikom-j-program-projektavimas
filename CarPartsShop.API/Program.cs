@@ -14,7 +14,6 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
-using Autofac.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,7 +25,8 @@ builder.Logging.ClearProviders();
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
 // Add services to the container.
-string connectionString = builder.Configuration.GetConnectionString("CarPartsShopDatabase");
+//string connectionString = builder.Configuration.GetConnectionString("CarPartsShopDatabase");
+string connectionString = builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING");
 
 builder.Services.AddIdentity<ShopRestUser, IdentityRole>()
     .AddEntityFrameworkStores<DatabaseContext>()
@@ -101,7 +101,6 @@ builder.Services.AddSwaggerGen(c => {
             },
             new string[] {}
         }
-
     });
     c.EnableAnnotations();
 });
@@ -115,7 +114,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+//if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();

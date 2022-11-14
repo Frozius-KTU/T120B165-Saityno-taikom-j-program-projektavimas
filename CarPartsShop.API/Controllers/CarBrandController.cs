@@ -12,7 +12,8 @@ namespace CarPartsShop.API.Controllers;
 [Route("api/carBrand")]
 public class CarBrandController : BaseController
 {
-    public CarBrandController(ICarBrandService carBrandService, ICarModelService carModelService, ICarPartService carPartService, IAuthorizationService authorizationService)
+    public CarBrandController(ICarBrandService carBrandService, ICarModelService carModelService,
+        ICarPartService carPartService, IAuthorizationService authorizationService)
     {
         CarBrandService = carBrandService ?? throw new ArgumentNullException(nameof(carBrandService));
         CarModelService = carModelService ?? throw new ArgumentNullException(nameof(carModelService));
@@ -53,9 +54,8 @@ public class CarBrandController : BaseController
             var result = await CarBrandService.GetCarBrandById(carBrandId);
             if (result is null) return NotFound();
             if (carBrandId == Guid.Empty) return NotFound();
-            //return Ok(Mapper.Map<ICollection<CarBrandModel>>(result));
+
             return Ok(result);
-            //return Mapper.Map<CarBrandModel>(result);
         }
         catch (Exception ex)
         {
@@ -73,7 +73,6 @@ public class CarBrandController : BaseController
             var result = await CarModelService.GetCarModelByBrandList(carBrandId);
             if (carBrandId == Guid.Empty) return NotFound();
             if (result is null) return NotFound();
-            //return Mapper.Map<CarModelModel>(result);
             return Ok(result);
         }
         catch (Exception ex)
@@ -117,7 +116,7 @@ public class CarBrandController : BaseController
         }
     }
     [HttpPost]
-    [Authorize(Roles = ShopRoles.ShopWorker)]
+    [Authorize(Roles = ShopRoles.ShopUser)]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CarBrandModel))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<CarBrandModel>> CreateCarBrand([FromBody] CarBrandModel carBrandModel, CancellationToken cancellationToken = default)
@@ -127,10 +126,10 @@ public class CarBrandController : BaseController
             if (carBrandModel is null) return BadRequest();
             var carBrandEntity = carBrandModel.ToEntity();
             carBrandEntity.UserId = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+            carBrandEntity.Id = Guid.NewGuid();
             var createdCarBrand = await CarBrandService.CreateCarBrand(carBrandEntity, cancellationToken);
 
             return Created(nameof(CarBrandModel), Mapper.Map<CarBrandModel>(carBrandModel));
-            //return Ok(Mapper.Map<CarBrandModel>(carBrandModel));
         }
         catch (Exception ex)
         {
@@ -138,21 +137,23 @@ public class CarBrandController : BaseController
         }
     }
     [HttpDelete("{carBrandId:Guid}")]
-    [Authorize(Roles = ShopRoles.ShopWorker)]
+    [Authorize(Roles = ShopRoles.Admin)]
     [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(CarBrandModel))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<CarBrandModel>> DeleteCarBrand(Guid carBrandId, CancellationToken cancellationToken = default)
     {
         try
         {
-            /*var carBrandToDelete = await CarBrandService.GetCarBrandById(carBrandId);
-            var deletedcarBrand = await CarBrandService.DeleteCarBrand(carBrandToDelete, cancellationToken);*/
-            if (carBrandId == Guid.Empty) return NotFound();
-            var itemToDelete = await GetCarBrandById(carBrandId);
-            if (itemToDelete is null) return NotFound();
+            if (carBrandId == Guid.Empty) 
+                return NotFound();
+
+            var itemToDelete = await GetCarBrandById(carBrandId, cancellationToken);
+
+            if (itemToDelete.Result is null) 
+                return NotFound();
+
             await CarBrandService.DeleteCarBrand(carBrandId, cancellationToken);
             return NoContent();
-            //return Mapper.Map<CarBrandModel>(deletedcarBrand);
         }
         catch (Exception ex)
         {
@@ -160,7 +161,7 @@ public class CarBrandController : BaseController
         }
     }
     [HttpPut("{carBrandId:Guid}")]
-    [Authorize(Roles = ShopRoles.ShopWorker)]
+    [Authorize(Roles = ShopRoles.ShopUser)]
     [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(CarBrandModel))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -176,9 +177,9 @@ public class CarBrandController : BaseController
         if (!authorizationResult.Succeeded)
         {
             // 404
-            string ex = brand.Result.UserId + " == ";
-            return StatusCode(StatusCodes.Status500InternalServerError, ex);
-            //return Forbid();
+            //string ex = brand.Result.UserId + " == ";
+            //return StatusCode(StatusCodes.Status500InternalServerError, ex);
+            return Forbid();
         }
         await CarBrandService.UpdateCarBrand(carBrandId, carBrand.ToEntity(), cancellationToken);
         return NoContent();
