@@ -54,7 +54,7 @@ export class AuthService {
     else {
       const expiry = JSON.parse(atob(token.split('.')[1])).exp;
       if (Math.floor(new Date().getTime() / 1000) >= expiry) {
-        this.router.navigate(['/login']);
+        //this.router.navigate(['/login']);
         this.isAuthenticated = false;
       } else {
         this.isAuthenticated = true;
