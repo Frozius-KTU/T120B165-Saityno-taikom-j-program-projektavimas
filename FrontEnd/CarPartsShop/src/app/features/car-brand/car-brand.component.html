@@ -1,0 +1,62 @@
+<p>car-brand works!</p>
+<table>
+  <tbody>
+    <tr *ngFor="let carBrand of carBrands.data">
+      <td>{{ carBrand.id }}</td>
+      <td>{{ carBrand.name }}</td>
+    </tr>
+  </tbody>
+</table>
+<div style="display: flex">
+  <utils-grid
+    [data]="carBrands"
+    [pageable]="pageSize < carBrands.total ? pagerSettings : false"
+    [pageSize]="pageSize"
+    [skip]="skip"
+    (pageChange)="pageChange($event)"
+    [loading]="loading"
+    (cellClick)="onCellClick($event)"
+    (add)="addHandler($event)"
+    (edit)="editHandler($event)"
+    (cancel)="cancelHandler($event)"
+    (save)="saveHandler($event)"
+    (remove)="removeHandler($event)"
+    [height]="500"
+  >
+    <utils-grid-column [editable]="false" [width]="200" field="id" title="Id">
+    </utils-grid-column>
+    <utils-grid-column [width]="200" field="name" title="Name">
+    </utils-grid-column>
+    <utils-grid-command-column [width]="100">
+      <ng-template utilsGridHeaderTemplate>
+        <button utilsGridAddCommand>Add</button>
+      </ng-template>
+
+      <ng-template utilsGridCellTemplate>
+        <button class="btn btn-primary" utilsGridEditCommand>Edit</button>
+        <button utilsGridRemoveCommand>Remove</button>
+        <button utilsGridSaveCommand>Save</button>
+        <button utilsGridCancelCommand>Cancel</button>
+      </ng-template>
+    </utils-grid-command-column>
+  </utils-grid>
+</div>
+<button (click)="setLoading(5000)">Set loading 5s</button>
+<!-- <utils-grid [data]="[]">
+	<ng-template utilsGridNoRecordsTemplate> THERE IS NO RECORDSSS </ng-template>
+	<utils-grid-column [width]="40" field="id" title="Id"></utils-grid-column>
+	<utils-grid-column [width]="40" field="id" title="Id"></utils-grid-column>
+	<utils-grid-column [width]="40" field="id" title="Id"></utils-grid-column>
+	<utils-grid-column [width]="40" field="id" title="Id"></utils-grid-column>
+</utils-grid>
+
+<utils-grid [data]="[]">
+	<utils-grid-column [width]="40" field="id" title="Id"></utils-grid-column>
+	<utils-grid-column [width]="40" field="id" title="Id"></utils-grid-column>
+	<utils-grid-column [width]="40" field="id" title="Id"></utils-grid-column>
+	<utils-grid-column [width]="40" field="id" title="Id"></utils-grid-column>
+</utils-grid>
+
+<p>ColumnIndex: {{ clickedCell?.columnIndex }}</p>
+<p>ColumnName: {{ clickedCell?.columnName }}</p>
+<p>ColumnData: {{ clickedCell?.data.id }} {{clickedCell?.data.name}} {{ clickedCell?.data.age }}</p> -->
