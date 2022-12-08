@@ -18,6 +18,8 @@ import { RegisterComponent } from './features/register/register.component';
 import { AppInitializer } from './utils/app.initializer';
 import { ServiceLocator } from './utils/service-locator';
 import { CarModelComponent } from './features/car-model/car-model.component';
+import { CrudCommandsComponent } from './core/components/crud-commands/crud-commands.component';
+import { ErrorInterceptor } from './core/interceptors/error.interceptor';
 
 function initApp(initializer: AppInitializer) {
   return () => initializer.initialize();
@@ -30,6 +32,7 @@ function initApp(initializer: AppInitializer) {
     LoginComponent,
     RegisterComponent,
     CarModelComponent,
+    CrudCommandsComponent,
   ],
   imports: [
     HttpClientModule,
@@ -50,6 +53,7 @@ function initApp(initializer: AppInitializer) {
       multi: true,
     },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
 })

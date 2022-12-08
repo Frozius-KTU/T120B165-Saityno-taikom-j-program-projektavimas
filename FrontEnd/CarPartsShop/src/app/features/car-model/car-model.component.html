@@ -1,4 +1,4 @@
-<div style="display: flex">
+<div style="display: flex" class="centravimoze">
   <utils-grid
     [data]="carModels"
     [pageable]="pageSize < carModels.total ? pagerSettings : false"
@@ -16,7 +16,7 @@
   >
     <utils-grid-column [editable]="false" [width]="200" field="id" title="Id">
     </utils-grid-column>
-    <utils-grid-column [width]="200" field="name" title="Name">
+    <utils-grid-column [width]="300" field="name" title="Name">
     </utils-grid-column>
     <utils-grid-column
       [editable]="true"
@@ -52,21 +52,21 @@
         <!-- <utils-textbox [value]="item.carBrand.name"></utils-textbox> -->
       </ng-template>
     </utils-grid-column>
-    <utils-grid-command-column [width]="100">
+    <utils-grid-command-column [width]="200">
       <ng-template utilsGridHeaderTemplate>
-        <button utilsGridAddCommand>Add</button>
+        <button class="btn btn-success" utilsGridAddCommand>Add</button>
       </ng-template>
 
       <ng-template utilsGridCellTemplate>
-        <button class="btn btn-primary" utilsGridEditCommand>Edit</button>
-        <button utilsGridRemoveCommand>Remove</button>
-        <button utilsGridSaveCommand>Save</button>
-        <button utilsGridCancelCommand>Cancel</button>
+        <button class="badge bg-primary" utilsGridEditCommand>Edit</button>
+        <button class="badge bg-danger" utilsGridRemoveCommand>Remove</button>
+        <button class="badge bg-warning" utilsGridSaveCommand>Save</button>
+        <button class="badge bg-danger" utilsGridCancelCommand>Cancel</button>
       </ng-template>
     </utils-grid-command-column>
   </utils-grid>
 </div>
-<button (click)="setLoading(5000)">Set loading 5s</button>
+<!-- <button (click)="setLoading(5000)">Set loading 5s</button> -->
 <!-- <utils-grid [data]="[]">
 	<ng-template utilsGridNoRecordsTemplate> THERE IS NO RECORDSSS </ng-template>
 	<utils-grid-column [width]="40" field="id" title="Id"></utils-grid-column>

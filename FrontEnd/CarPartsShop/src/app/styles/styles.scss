@@ -1,2 +1,8 @@
-$danger: #00ff73;
-@import "~bootstrap"
+//$danger: #00ff73;
+@import "~bootstrap";
+
+.centravimoze {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

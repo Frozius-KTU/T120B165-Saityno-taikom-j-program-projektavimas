@@ -5,6 +5,8 @@ using System.Security.Claims;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.AspNetCore.Authorization;
 using CarPartsShop.Core.Aggregates.Auth;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
 
 namespace CarPartsShop.API.Controllers;
 
@@ -156,9 +158,18 @@ public class CarBrandController : BaseController
             await CarBrandService.DeleteCarBrand(carBrandId, cancellationToken);
             return NoContent();
         }
-        catch (Exception ex)
+        catch (DbUpdateException ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, ex);
+            var sqlException = ex.GetBaseException() as SqlException;
+            if (sqlException != null)
+            {
+                if (sqlException.Number == 547)
+                {
+                    return StatusCode(StatusCodes.Status403Forbidden);
+                }
+                else throw ex;
+            }
+            else throw ex;
         }
     }
     [HttpPut("{carBrandId:Guid}")]

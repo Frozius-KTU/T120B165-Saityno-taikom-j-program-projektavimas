@@ -14,8 +14,10 @@ import {
   SaveEvent,
 } from 'angular-helper-utils/lib/components/grid/types/edit.events';
 import { finalize } from 'rxjs';
+import { AlertsService } from 'src/app/core/services/alerts.service';
 import { CarBrandService } from 'src/app/core/services/car-brand.service';
 import { CarBrand } from 'src/app/core/types/CarPartsShop.types';
+import Swal from 'sweetalert2';
 import { v4 } from 'uuid';
 @Component({
   selector: 'app-car-brand',
@@ -29,7 +31,10 @@ export class CarBrandComponent implements OnInit {
   public pageSize: number = 5;
   public carBrands: PaginatedList<CarBrand> = { data: [], total: 0 };
 
-  constructor(private carBrandService: CarBrandService) {}
+  constructor(
+    private carBrandService: CarBrandService,
+    private alertsService: AlertsService
+  ) {}
 
   public pagerSettings: PagerSettings = {
     pageSizes: [10, 20, 50, 100],
@@ -116,9 +121,14 @@ export class CarBrandComponent implements OnInit {
   }
 
   public removeHandler(event: RemoveEvent): void {
-    this.carBrandService.deleteItemFromList(event.dataItem.id).subscribe({
-      next: () => {
-        this.getCarBrandList();
+    this.alertsService.confirm('sigitas', 'sigituzeris').subscribe({
+      next: (isConfirmed) => {
+        if (!isConfirmed) return;
+        this.carBrandService.deleteItemFromList(event.dataItem.id).subscribe({
+          next: () => {
+            this.getCarBrandList();
+          },
+        });
       },
     });
   }

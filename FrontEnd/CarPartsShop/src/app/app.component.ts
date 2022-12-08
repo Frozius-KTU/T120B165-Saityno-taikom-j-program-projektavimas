@@ -20,7 +20,6 @@ export class AppComponent {
     this.router.navigate(['/register']);
   }
   getAuth(): Boolean {
-    console.log(this.authService.isAuthenticated);
     return this.authService.isAuthenticated;
   }
   toCarBrands() {

@@ -3,7 +3,7 @@ using CarPartsShop.Core.Aggregates.CarModel;
 using CarPartsShop.Shared.Interfaces;
 
 namespace CarPartsShop.Core.Aggregates.CarPart;
-public class CarPartEntity : BaseEntity, IAggregateRoot
+public class CarPartEntity : BaseEntity, IAggregateRoot, IUserOwnedResource
 {
     public string Name { get; set; }
     public string Description { get; set; }

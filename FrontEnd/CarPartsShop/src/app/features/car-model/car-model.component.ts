@@ -14,6 +14,7 @@ import {
   SaveEvent,
 } from 'angular-helper-utils/lib/components/grid/types/edit.events';
 import { finalize } from 'rxjs';
+import { AlertsService } from 'src/app/core/services/alerts.service';
 import { CarBrandService } from 'src/app/core/services/car-brand.service';
 import { CarModelService } from 'src/app/core/services/car-model.service';
 import { CarBrand, CarModel } from 'src/app/core/types/CarPartsShop.types';
@@ -33,7 +34,8 @@ export class CarModelComponent implements OnInit {
   public carBrands?: CarBrand[];
   constructor(
     private carModelService: CarModelService,
-    private carBrandService: CarBrandService
+    private carBrandService: CarBrandService,
+    private alertService: AlertsService
   ) {}
 
   public pagerSettings: PagerSettings = {
@@ -136,9 +138,14 @@ export class CarModelComponent implements OnInit {
   }
 
   public removeHandler(event: RemoveEvent): void {
-    this.carModelService.deleteItemFromList(event.dataItem.id).subscribe({
-      next: () => {
-        this.getCarModelList();
+    this.alertService.confirm('sigitas', 'sigituzeris').subscribe({
+      next: (isConfirmed) => {
+        if (!isConfirmed) return;
+        this.carModelService.deleteItemFromList(event.dataItem.id).subscribe({
+          next: () => {
+            this.getCarModelList();
+          },
+        });
       },
     });
   }
