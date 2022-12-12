@@ -28,7 +28,7 @@ export class CarBrandComponent implements OnInit {
   public loading: boolean = false;
 
   public skip: number = 0;
-  public pageSize: number = 5;
+  public pageSize: number = 6;
   public carBrands: PaginatedList<CarBrand> = { data: [], total: 0 };
 
   constructor(
@@ -121,15 +121,17 @@ export class CarBrandComponent implements OnInit {
   }
 
   public removeHandler(event: RemoveEvent): void {
-    this.alertsService.confirm('sigitas', 'sigituzeris').subscribe({
-      next: (isConfirmed) => {
-        if (!isConfirmed) return;
-        this.carBrandService.deleteItemFromList(event.dataItem.id).subscribe({
-          next: () => {
-            this.getCarBrandList();
-          },
-        });
-      },
-    });
+    this.alertsService
+      .confirm('Remove', 'Do you truly wish to remove this object?')
+      .subscribe({
+        next: (isConfirmed) => {
+          if (!isConfirmed) return;
+          this.carBrandService.deleteItemFromList(event.dataItem.id).subscribe({
+            next: () => {
+              this.getCarBrandList();
+            },
+          });
+        },
+      });
   }
 }

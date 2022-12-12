@@ -72,6 +72,7 @@ public class CarPartController : BaseController
             return StatusCode(StatusCodes.Status500InternalServerError, ex);
         }
     }
+
     [HttpDelete("{carPartId:Guid}")]
     [Authorize(Roles = ShopRoles.Admin)]
     [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(CarPartModel))]

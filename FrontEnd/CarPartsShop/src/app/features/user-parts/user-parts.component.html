@@ -1,0 +1,101 @@
+<div style="display: flex" class="centravimoze">
+  <utils-grid
+    [data]="carParts"
+    [pageSize]="pageSize"
+    [skip]="skip"
+    (pageChange)="pageChange($event)"
+    [loading]="loading"
+    (cellClick)="onCellClick($event)"
+    (add)="addHandler($event)"
+    (edit)="editHandler($event)"
+    (cancel)="cancelHandler($event)"
+    (save)="saveHandler($event)"
+    (remove)="removeHandler($event)"
+    [height]="500"
+  >
+    <utils-grid-column
+      cellClass="overflow-hidden"
+      [width]="150"
+      field="name"
+      title="Name"
+    >
+    </utils-grid-column>
+    <utils-grid-column
+      [editable]="true"
+      [width]="200"
+      field="carModel"
+      title="Model name"
+    >
+      <ng-template utilsGridCellTemplate let-item>{{
+        item.carModel.name
+      }}</ng-template>
+      <!-- <ng-template utilsGridEditTemplate let-item> -->
+      <ng-template utilsGridEditTemplate let-formGroup="formGroup">
+        <utils-combobox
+          *ngIf="carModels"
+          [data]="carModels"
+          [width]="250"
+          style="z-index: 100"
+          placeholder="Combobox"
+          [textField]="'name'"
+          [showSelected]="true"
+          [disabled]="false"
+          [clearButton]="true"
+          [formControl]="formGroup.get('carModel')"
+        >
+          <ng-template
+            utilsComboboxItemTemplate
+            let-item
+            let-rowIndex="rowIndex"
+          >
+            {{ item.carBrand.name }} - {{ rowIndex }}
+          </ng-template>
+        </utils-combobox>
+        <!-- <utils-textbox [value]="item.carBrand.name"></utils-textbox> -->
+      </ng-template>
+    </utils-grid-column>
+    <utils-grid-column [width]="100" field="qty" title="Qty">
+    </utils-grid-column>
+    <utils-grid-column [width]="300" field="description" title="Description">
+      <ng-template utilsGridCellTemplate let-item>
+        <textarea [value]="item.description" disabled rows="3"></textarea>
+      </ng-template>
+    </utils-grid-column>
+    <utils-grid-column [width]="300" field="photoUrl" title="Photo Url">
+      <ng-template utilsGridCellTemplate let-item>
+        <textarea disabled rows="3" [value]="item.photoUrl"></textarea>
+      </ng-template>
+    </utils-grid-column>
+    <utils-grid-command-column [width]="200">
+      <ng-template utilsGridHeaderTemplate>
+        <button class="btn btn-success" utilsGridAddCommand>Add</button>
+      </ng-template>
+
+      <ng-template utilsGridCellTemplate>
+        <button class="badge bg-primary" utilsGridEditCommand>Edit</button>
+        <button class="badge bg-danger" utilsGridRemoveCommand>Remove</button>
+        <button class="badge bg-warning" utilsGridSaveCommand>Save</button>
+        <button class="badge bg-danger" utilsGridCancelCommand>Cancel</button>
+      </ng-template>
+    </utils-grid-command-column>
+  </utils-grid>
+</div>
+<!-- <button (click)="setLoading(5000)">Set loading 5s</button> -->
+<!-- <utils-grid [data]="[]">
+	<ng-template utilsGridNoRecordsTemplate> THERE IS NO RECORDSSS </ng-template>
+	<utils-grid-column [width]="40" field="id" title="Id"></utils-grid-column>
+	<utils-grid-column [width]="40" field="id" title="Id"></utils-grid-column>
+	<utils-grid-column [width]="40" field="id" title="Id"></utils-grid-column>
+	<utils-grid-column [width]="40" field="id" title="Id"></utils-grid-column>
+</utils-grid>
+
+<utils-grid [data]="[]">
+	<utils-grid-column [width]="40" field="id" title="Id"></utils-grid-column>
+	<utils-grid-column [width]="40" field="id" title="Id"></utils-grid-column>
+	<utils-grid-column [width]="40" field="id" title="Id"></utils-grid-column>
+	<utils-grid-column [width]="40" field="id" title="Id"></utils-grid-column>
+</utils-grid>
+
+<p>ColumnIndex: {{ clickedCell?.columnIndex }}</p>
+<p>ColumnName: {{ clickedCell?.columnName }}</p>
+<p>ColumnData: {{ clickedCell?.data.id }} {{clickedCell?.data.name}} {{ clickedCell?.data.age }}</p> -->

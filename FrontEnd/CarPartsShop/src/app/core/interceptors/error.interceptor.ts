@@ -19,15 +19,15 @@ export class ErrorInterceptor implements HttpInterceptor {
       tap({
         error: (error) => {
           console.log(error);
-          let title = 'Nezinoma klaida';
-          let message = 'Susisiekite su vadminu';
+          let title = 'Unknown faut';
+          let message = 'Contact admin';
           if (error.error?.status === 403) {
-            title = 'Pizda sigucio';
-            message = 'Netrink tokiu dalyku kuriu yra daugiau tolimiau';
+            title = 'Error';
+            message = 'Cant delete an object, which is refering to another';
           }
           if (error.error === 'INCORRECT_CREDENTIALS') {
-            title = 'Kazko stobaliai neivedei';
-            message = 'Kita kart ivesk nes kestas apvems tave';
+            title = 'Invalid Credentials';
+            message = 'Please try again';
           }
           this.alertService.error(title, message);
         },

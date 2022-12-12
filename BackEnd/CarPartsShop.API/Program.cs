@@ -25,8 +25,8 @@ builder.Logging.ClearProviders();
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
 // Add services to the container.
-string connectionString = builder.Configuration.GetConnectionString("CarPartsShopDatabase");
-//string connectionString = builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING");
+//string connectionString = builder.Configuration.GetConnectionString("CarPartsShopDatabase");
+string connectionString = builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING");
 
 builder.Services.AddIdentity<ShopRestUser, IdentityRole>()
     .AddEntityFrameworkStores<DatabaseContext>()

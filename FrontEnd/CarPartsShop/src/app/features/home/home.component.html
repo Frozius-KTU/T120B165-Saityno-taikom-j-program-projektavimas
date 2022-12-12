@@ -1,1 +1,54 @@
-<p>home works!</p>
+<div>
+  <utils-combobox
+    [data]="carModels.filterableData"
+    [width]="250"
+    style="z-index: 100"
+    placeholder="Model"
+    [textField]="'name'"
+    [showSelected]="true"
+    [disabled]="false"
+    [clearButton]="true"
+    [filterable]="true"
+    (filterChange)="carModels.filter($event, 'name')"
+    (selectionChange)="setThing($event)"
+  >
+    <ng-template utilsComboboxItemTemplate let-item let-rowIndex="rowIndex">
+      {{ item.carModels.name }} - {{ rowIndex }}
+    </ng-template>
+  </utils-combobox>
+</div>
+
+<div class="container">
+  <div class="">
+    <div
+      *ngFor="let carPart of carParts!; let i = index"
+      class="col-xs-2 themed-grid-col"
+    >
+      <div class="parent" (click)="openItemWindow(carPart.id!)">
+        <div class="child">
+          <span>
+            <img
+              src="{{ carPart.photoUrl }}"
+              alt="{{ carPart.name }}"
+              style="width: 100%"
+            />
+          </span>
+        </div>
+      </div>
+
+      <div class="name">
+        {{ carPart.name }}
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  function hidePasw() {
+    var x = document.getElementById("paswordinis");
+    if (x.type === "password") {
+      x.type = "text";
+    } else {
+      x.type = "password";
+    }
+  }
+</script>

@@ -1,8 +1,46 @@
-<p>login works!</p>
+<!-- <p>login works!</p>
 <form [formGroup]="form">
   <input formControlName='userName'/>
   <input formControlName='password'/>
 </form>
 <button (click)="loginUser()">
 
-</button>
+</button> -->
+<div class="wrapper fadeInDown">
+  <div id="formContent">
+    <div class="fadeIn first pt-4">
+      <h4>Welcome</h4>
+    </div>
+
+    <form [formGroup]="form">
+      <input
+        type="text"
+        id="login"
+        class="fadeIn second"
+        name="login"
+        placeholder="Username"
+        formControlName="userName"
+      />
+      <input
+        type="password"
+        style="position: relative; left: 10px"
+        id="paswordinis"
+        class="fadeIn third"
+        name="login"
+        placeholder="Password"
+        formControlName="password"
+      />
+      <i class="fa-solid fa-eye-slash pasleptas" onclick="hidePasw()"></i>
+      <input
+        type="submit"
+        class="fadeIn fourth"
+        value="Log In"
+        (click)="loginUser()"
+      />
+    </form>
+
+    <div id="formFooter">
+      <a class="underlineHover" routerLink="/register">New here? Register</a>
+    </div>
+  </div>
+</div>

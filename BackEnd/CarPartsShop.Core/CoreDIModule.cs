@@ -20,5 +20,8 @@ public class CoreDIModule : Module
         builder.RegisterType<JwtTokenService>()
                .As<IJwtTokenService>()
                .InstancePerLifetimeScope();
+        builder.RegisterType<AuthService>()
+               .As<IAuthService>()
+               .InstancePerLifetimeScope();
     }
 }

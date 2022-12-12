@@ -118,7 +118,7 @@ public class CarBrandController : BaseController
         }
     }
     [HttpPost]
-    [Authorize(Roles = ShopRoles.ShopUser)]
+    [Authorize(Roles = ShopRoles.Admin)]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CarBrandModel))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<CarBrandModel>> CreateCarBrand([FromBody] CarBrandModel carBrandModel, CancellationToken cancellationToken = default)
@@ -173,7 +173,7 @@ public class CarBrandController : BaseController
         }
     }
     [HttpPut("{carBrandId:Guid}")]
-    [Authorize(Roles = ShopRoles.ShopUser)]
+    [Authorize(Roles = ShopRoles.Admin)]
     [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(CarBrandModel))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

@@ -138,15 +138,17 @@ export class CarModelComponent implements OnInit {
   }
 
   public removeHandler(event: RemoveEvent): void {
-    this.alertService.confirm('sigitas', 'sigituzeris').subscribe({
-      next: (isConfirmed) => {
-        if (!isConfirmed) return;
-        this.carModelService.deleteItemFromList(event.dataItem.id).subscribe({
-          next: () => {
-            this.getCarModelList();
-          },
-        });
-      },
-    });
+    this.alertService
+      .confirm('Remove', 'Do you truly wish to remove this object?')
+      .subscribe({
+        next: (isConfirmed) => {
+          if (!isConfirmed) return;
+          this.carModelService.deleteItemFromList(event.dataItem.id).subscribe({
+            next: () => {
+              this.getCarModelList();
+            },
+          });
+        },
+      });
   }
 }

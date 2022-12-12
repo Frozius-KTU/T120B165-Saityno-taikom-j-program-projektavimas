@@ -16,13 +16,16 @@ namespace CarPartsShop.API.Controllers;
 [Route("api/carModel")]
 public class CarModelController : BaseController
 {
-    public CarModelController(ICarModelService carModelService, IAuthorizationService authorizationService)
+    public CarModelController(ICarModelService carModelService, ICarPartService carPartService, IAuthorizationService authorizationService)
     {
         CarModelService = carModelService ?? throw new ArgumentNullException(nameof(carModelService));
+        CarPartService = carPartService ?? throw new ArgumentNullException(nameof(carPartService));
         _authorizationService = authorizationService;
     }
 
     private ICarModelService CarModelService { get; }
+    public ICarPartService CarPartService { get; }
+
     private readonly IAuthorizationService _authorizationService;
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CarModelModel))]
@@ -56,8 +59,25 @@ public class CarModelController : BaseController
             return StatusCode(StatusCodes.Status500InternalServerError, ex);
         }
     }
+    [HttpGet("{carModelId:Guid}/carPart")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CarBrandModel))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<ICollection<CarPartModel>>> GetCarPartsByModelId([FromRoute] Guid carModelId, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var result = await CarPartService.GetCarPartsByModelId(carModelId, cancellationToken);
+            if (carModelId == Guid.Empty) return NotFound();
+            //return Mapper.Map<CarModelModel>(result);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, ex);
+        }
+    }
     [HttpPost]
-    [Authorize(Roles = ShopRoles.ShopUser)]
+    [Authorize(Roles = ShopRoles.Admin)]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CarModelModel))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<CarModelModel>> CreateCarModel([FromBody] CarModelModel carModelModel, CancellationToken cancellationToken = default)
@@ -96,7 +116,7 @@ public class CarModelController : BaseController
         }
     }
     [HttpPut("{carModelId:Guid}")]
-    [Authorize(Roles = ShopRoles.ShopUser)]
+    [Authorize(Roles = ShopRoles.Admin)]
     [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(CarModelModel))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

@@ -1,0 +1,19 @@
+<div>
+  <div>
+    <img
+      style="padding-left: 1rem; max-width: 500px; max-height: 300px"
+      src="{{ carPart?.photoUrl }}"
+      alt="{{ carPart?.name }}"
+    />
+  </div>
+  <h1>
+    {{ carPart?.name }}
+  </h1>
+  <p>Aprašymas</p>
+  <div>
+    {{ carPart?.description }}
+  </div>
+  <br />
+
+  <div>Sandėlyje likę: {{ carPart?.qty }} vnt.</div>
+</div>

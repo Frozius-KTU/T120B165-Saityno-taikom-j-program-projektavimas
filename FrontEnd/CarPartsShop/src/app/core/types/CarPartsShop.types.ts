@@ -7,6 +7,14 @@ export type CarModel = {
   name: string;
   carBrand: CarBrand;
 };
+export type CarPart = {
+  id?: string;
+  name: string;
+  description: string;
+  qty: number;
+  carModel: CarModel;
+  photoUrl: string;
+};
 export type User = {
   id?: string;
   username: string;

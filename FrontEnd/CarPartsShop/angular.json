@@ -28,9 +28,16 @@
               "src/assets"
             ],
             "styles": [
-              "src/app/styles/styles.scss"
+              "src/app/styles/styles.scss",
+              "src/assets/scss/soft-ui-dashboard.scss",
+              "src/assets/css/nucleo-svg.css",
+              "src/assets/css/nucleo-icons.css"
             ],
-            "scripts": []
+            "scripts": [
+              "./node_modules/@popperjs/core/dist/umd/popper.min.js",
+              "./node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "./src/assets/js/soft-ui-dashboard.js"
+            ]
           },
           "configurations": {
             "production": {

@@ -11,4 +11,7 @@ public interface ICarPartService
     Task<CarPartEntity> UpdateCarPart(Guid carPartId, CarPartEntity carPart, CancellationToken cancellationToken = default);
     Task<ICollection<CarPartEntity>> GetCarPartByBrandList([FromRoute] Guid carBrandId, [FromRoute] Guid carModelId, CancellationToken cancellationToken = default);
     Task<ICollection<CarPartEntity>> GetCarPartsByBrandList([FromRoute] Guid carBrandId, CancellationToken cancellationToken = default);
+    Task<ICollection<CarPartEntity>> GetCarPartsByUserId([FromRoute] Guid userId, CancellationToken cancellationToken = default);
+    Task<ICollection<CarPartEntity>> GetCarPartsByModelId([FromRoute] Guid carModelId, CancellationToken cancellationToken = default);
+
 }

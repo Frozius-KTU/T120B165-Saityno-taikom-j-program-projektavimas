@@ -20,6 +20,10 @@ import { ServiceLocator } from './utils/service-locator';
 import { CarModelComponent } from './features/car-model/car-model.component';
 import { CrudCommandsComponent } from './core/components/crud-commands/crud-commands.component';
 import { ErrorInterceptor } from './core/interceptors/error.interceptor';
+import { CarPartComponent } from './features/car-part/car-part.component';
+import { CollapseSidebarComponent } from './core/components/collapse-sidebar/collapse-sidebar.component';
+import { UserPartsComponent } from './features/user-parts/user-parts.component';
+import { ItemComponent } from './features/item/item.component';
 
 function initApp(initializer: AppInitializer) {
   return () => initializer.initialize();
@@ -33,6 +37,9 @@ function initApp(initializer: AppInitializer) {
     RegisterComponent,
     CarModelComponent,
     CrudCommandsComponent,
+    CarPartComponent,
+    UserPartsComponent,
+    ItemComponent,
   ],
   imports: [
     HttpClientModule,
