@@ -33,17 +33,58 @@
       </li>
       <li class="nav-item" *ngIf="isAdmin()">
         <a class="nav-link" routerLink="/carBrand">
+          <svg width="15" height="15">
+            <circle
+              cx="5"
+              cy="5"
+              r="2"
+              stroke="white"
+              stroke-width="4"
+              fill="black"
+            />
+          </svg>
+
           <span class="nav-link-text ms-1">Car Brands</span>
         </a>
         <a class="nav-link" routerLink="/carModel">
+          <svg width="15" height="15">
+            <circle
+              cx="5"
+              cy="5"
+              r="2"
+              stroke="white"
+              stroke-width="4"
+              fill="black"
+            />
+          </svg>
           <span class="nav-link-text ms-1">Car Models</span>
         </a>
         <a class="nav-link" routerLink="/carPart">
+          <svg width="15" height="15">
+            <circle
+              cx="5"
+              cy="5"
+              r="2"
+              stroke="white"
+              stroke-width="4"
+              fill="black"
+            />
+          </svg>
           <span class="nav-link-text ms-1">Car Parts</span>
         </a>
       </li>
       <li class="nav-item" *ngIf="isUser()">
         <a class="nav-link" routerLink="/userParts">
+          <svg width="15" height="15">
+            <circle
+              cx="5"
+              cy="5"
+              r="2"
+              stroke="white"
+              stroke-width="4"
+              fill="black"
+            />
+          </svg>
           <span class="nav-link-text ms-1">Your Car Parts</span>
         </a>
       </li>
@@ -75,6 +116,9 @@
                 </li>
               </ul>
             </div>
+            <i class="fa-solid fa-user pe-4" *ngIf="user">
+              {{ user.userName }}
+            </i>
             <i
               class="fa-solid fa-right-from-bracket clickable"
               (click)="logOut()"

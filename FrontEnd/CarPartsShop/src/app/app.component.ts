@@ -23,6 +23,7 @@ export class AppComponent implements OnInit {
         if (val) this.user = val;
       },
     });
+    if (this.user) console.log(this.user.userName);
   }
   isAdmin(): boolean {
     return this.authService.isAdmin;

@@ -17,7 +17,7 @@ export type CarPart = {
 };
 export type User = {
   id?: string;
-  username: string;
+  userName: string;
 };
 export type LoginRequest = {
   userName: string;
