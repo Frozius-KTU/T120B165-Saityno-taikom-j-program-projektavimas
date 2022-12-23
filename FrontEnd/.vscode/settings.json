@@ -1,0 +1,4 @@
+{
+  "appService.defaultWebAppToDeploy": "/subscriptions/ca92f268-ce86-4df4-abd3-da5090936e6c/AppServices/subscriptions/ca92f268-ce86-4df4-abd3-da5090936e6c/resourceGroups/appsvc_windows_centralus/providers/Microsoft.Web/sites/AutoDaliuShopas",
+  "appService.deploySubpath": "CarPartsShop"
+}

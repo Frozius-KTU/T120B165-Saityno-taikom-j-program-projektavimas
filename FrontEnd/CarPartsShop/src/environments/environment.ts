@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  APIUrl: 'https://carpartsshopktu.azurewebsites.net/api/',
-  //APIUrl: 'https://localhost:44336/api/',
+  //APIUrl: 'https://carpartsshopktu.azurewebsites.net/api/',
+  APIUrl: 'https://localhost:44336/api/',
 };
 
 /*
